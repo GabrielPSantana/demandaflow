@@ -4,9 +4,38 @@ import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-export const DetailToolbar = () => {
+interface IDetailToolbar {
+    newButtonText?: string;
+    showNewButton?: boolean;
+    showPreviousButton?: boolean;
+    showDeleteButton?: boolean;
+    showSaveButton?: boolean;
+    showSaveAndCloseButton?: boolean;
+
+    onClickNewButton?: () => void;
+    onClickPreviousButton?: () => void;
+    onClickDeleteButton?: () => void;
+    onClickSaveButton?: () => void;
+    onClickSaveAndCloseButton?: () => void;
+}
+
+export const DetailToolbar = ({
+    showNewButton = true,
+    showPreviousButton = true,
+    showDeleteButton = true,
+    showSaveButton = true,
+    showSaveAndCloseButton = false,
+
+    newButtonText = 'New',
+
+    onClickNewButton,
+    onClickPreviousButton,
+    onClickDeleteButton,
+    onClickSaveButton,
+    onClickSaveAndCloseButton,
+}: IDetailToolbar) => {
     const theme = useTheme();
- 
+
     return (
         <Box
             display="flex"
@@ -18,32 +47,69 @@ export const DetailToolbar = () => {
             height={theme.spacing(6)}
             component={Paper}
         >
-            <Button variant="contained" color="primary" disableElevation startIcon={<SaveIcon />}>
-                Salvar
-            </Button>
+            {showSaveButton && (
+                <Button
+                    variant="contained"
+                    color="primary"
+                    disableElevation
+                    startIcon={<SaveIcon />}
+                    onClick={onClickSaveButton}
+                >
+                    Salvar
+                </Button>
+            )}
 
-            <Button variant="outlined" color="primary" disableElevation startIcon={<SaveIcon />}>
-                Salvar e voltar
-            </Button>
+            {showSaveAndCloseButton && (
+                <Button
+                    variant="outlined"
+                    color="primary"
+                    disableElevation
+                    startIcon={<SaveIcon />}
+                    onClick={onClickSaveAndCloseButton}
+                >
+                    Salvar e voltar
+                </Button>
+            )}
 
-            <Button variant="outlined" color="primary" disableElevation startIcon={<DeleteIcon />}>
-                Apagar
-            </Button>
+            {showDeleteButton && (
+                <Button
+                    variant="outlined"
+                    color="error"
+                    disableElevation
+                    startIcon={<DeleteIcon />}
+                    onClick={onClickDeleteButton}
+                >
+                    Apagar
+                </Button>
+            )}
 
-            <Button variant="outlined" color="primary" disableElevation startIcon={<AddIcon />}>
-                Novo
-            </Button>
+            {showNewButton && (
+                <Button
+                    variant="outlined"
+                    color="primary"
+                    disableElevation
+                    startIcon={<AddIcon />}
+                    onClick={onClickNewButton}
+                >
+                    {newButtonText ?? 'Novo'}
+                </Button>
+            )}
 
-            <Divider variant="middle" orientation="vertical" />
+            {(showPreviousButton) && (
+                <Divider variant="middle" orientation="vertical" flexItem />
+            )}
 
-            <Button
-                variant="outlined"
-                color="primary"
-                disableElevation
-                startIcon={<ArrowBackIcon />}
-            >
-                Voltar
-            </Button>
+            {showPreviousButton && (
+                <Button
+                    variant="outlined"
+                    color="primary"
+                    disableElevation
+                    startIcon={<ArrowBackIcon />}
+                    onClick={onClickPreviousButton}
+                >
+                    Voltar
+                </Button>
+            )}
         </Box>
     );
 };
