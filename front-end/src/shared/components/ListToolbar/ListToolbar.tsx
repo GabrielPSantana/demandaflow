@@ -1,7 +1,7 @@
 import { Box, Button, Paper, TextField, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
-interface IToolbarPros {
+interface IListToolbarPros {
     searchText?: string;
     showSearchInput?: boolean;
     onSearchTextChange?: (newText: string) => void;
@@ -11,14 +11,14 @@ interface IToolbarPros {
     onClickNewButton?: () => void;
 }
 
-export const Toolbar = ({
+export const ListToolbar = ({
     searchText = '',
     showSearchInput = false,
     onSearchTextChange,
     newButtonText = 'Novo',
     showNewButton = true,
     onClickNewButton,
-}: IToolbarPros) => {
+}: IListToolbarPros) => {
     const theme = useTheme();
     return (
         <Box
