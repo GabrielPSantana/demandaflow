@@ -4,24 +4,26 @@ import {
     Divider,
     Drawer,
     List,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
     useMediaQuery,
     useTheme,
 } from '@mui/material';
 import TaskIcon from '@mui/icons-material/Task';
-import { useDrawerContext } from '../../contexts';
+import { useAppThemeContext, useDrawerContext } from '../../contexts';
 import { ListItemLink } from '../ListItemLink/ListItemLink';
-import PeopleIcon from '@mui/icons-material/People';
-
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 interface IAppThemeProviderProps {
     children: React.ReactNode;
 }
-
 
 export const Sidebar: React.FC<IAppThemeProviderProps> = ({ children }) => {
     const theme = useTheme();
     const smDown = useMediaQuery(theme.breakpoints.down('sm'));
 
     const { isDrawerOpen, toggleDrawerOpen } = useDrawerContext();
+    const { toggleTheme } = useAppThemeContext();
 
     return (
         <>
@@ -46,9 +48,20 @@ export const Sidebar: React.FC<IAppThemeProviderProps> = ({ children }) => {
                     <Divider />
                     <Box flex={1}>
                         <List component="nav">
-                            <ListItemLink icon={<TaskIcon />} to="/" label="Atividades" onClick={toggleDrawerOpen}/>
-                            <ListItemLink icon={<PeopleIcon />} to="/Profile" label="Perfil" onClick={undefined}/>
+                            <ListItemLink
+                                icon={<TaskIcon />}
+                                to="/"
+                                label="Atividades"
+                                onClick={toggleDrawerOpen}
+                            />
                         </List>
+                    </Box>
+
+                    <Box>
+                        <ListItemButton onClick={toggleTheme}>
+                            <DarkModeIcon />
+                            <ListItemText primary="Alternar tema" />
+                        </ListItemButton>
                     </Box>
                 </Box>
             </Drawer>
