@@ -6,14 +6,10 @@ import { useDrawerContext } from '../contexts';
 interface IBasePageLayoutProps {
     children: ReactNode;
     title: string;
-    barraDeFerramentas?: ReactNode;
+    toolbar?: ReactNode;
 }
 
-export const BasePageLayout: React.FC<IBasePageLayoutProps> = ({
-    children,
-    title,
-    barraDeFerramentas,
-}) => {
+export const BasePageLayout: React.FC<IBasePageLayoutProps> = ({ children, title, toolbar }) => {
     const theme = useTheme();
 
     const smDown = useMediaQuery(theme.breakpoints.down('sm'));
@@ -44,7 +40,7 @@ export const BasePageLayout: React.FC<IBasePageLayoutProps> = ({
                     {title}
                 </Typography>
             </Box>
-            {barraDeFerramentas && <Box>{barraDeFerramentas}</Box>}
+            {toolbar && <Box>{toolbar}</Box>}
             <Box flex={1} overflow="auto">
                 {children}
             </Box>
