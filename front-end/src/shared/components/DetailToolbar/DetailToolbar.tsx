@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Paper, useTheme } from '@mui/material';
+import { Box, Button, Divider, Paper, Skeleton, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -6,11 +6,18 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 interface IDetailToolbar {
     newButtonText?: string;
+
     showNewButton?: boolean;
     showPreviousButton?: boolean;
     showDeleteButton?: boolean;
     showSaveButton?: boolean;
     showSaveAndCloseButton?: boolean;
+
+    showLoadingNewButton?: boolean;
+    showLoadingPreviousButton?: boolean;
+    showLoadingDeleteButton?: boolean;
+    showLoadingSaveButton?: boolean;
+    showLoadingSaveAndCloseButton?: boolean;
 
     onClickNewButton?: () => void;
     onClickPreviousButton?: () => void;
@@ -20,13 +27,19 @@ interface IDetailToolbar {
 }
 
 export const DetailToolbar = ({
+    newButtonText = 'Novo',
+
     showNewButton = true,
     showPreviousButton = true,
     showDeleteButton = true,
     showSaveButton = true,
-    showSaveAndCloseButton = false,
+    showSaveAndCloseButton = true,
 
-    newButtonText = 'New',
+    showLoadingNewButton = false,
+    showLoadingPreviousButton = false,
+    showLoadingDeleteButton = false,
+    showLoadingSaveButton = false,
+    showLoadingSaveAndCloseButton = false,
 
     onClickNewButton,
     onClickPreviousButton,
@@ -47,7 +60,7 @@ export const DetailToolbar = ({
             height={theme.spacing(6)}
             component={Paper}
         >
-            {showSaveButton && (
+            {showSaveButton && !showLoadingSaveButton && (
                 <Button
                     variant="contained"
                     color="primary"
@@ -58,8 +71,9 @@ export const DetailToolbar = ({
                     Salvar
                 </Button>
             )}
+            {showLoadingSaveButton && <Skeleton width={110} height={60} />}
 
-            {showSaveAndCloseButton && (
+            {showSaveAndCloseButton && !showLoadingSaveAndCloseButton && (
                 <Button
                     variant="outlined"
                     color="primary"
@@ -70,8 +84,9 @@ export const DetailToolbar = ({
                     Salvar e voltar
                 </Button>
             )}
+            {showLoadingSaveAndCloseButton && <Skeleton width={180} height={60} />}
 
-            {showDeleteButton && (
+            {showDeleteButton && !showLoadingDeleteButton && (
                 <Button
                     variant="outlined"
                     color="error"
@@ -82,8 +97,9 @@ export const DetailToolbar = ({
                     Apagar
                 </Button>
             )}
+            {showLoadingDeleteButton && <Skeleton width={110} height={60} />}
 
-            {showNewButton && (
+            {showNewButton && !showLoadingNewButton && (
                 <Button
                     variant="outlined"
                     color="primary"
@@ -91,15 +107,13 @@ export const DetailToolbar = ({
                     startIcon={<AddIcon />}
                     onClick={onClickNewButton}
                 >
-                    {newButtonText ?? 'Novo'}
+                    {newButtonText}
                 </Button>
             )}
+            {showLoadingNewButton && <Skeleton width={110} height={60} />}
 
-            {(showPreviousButton) && (
-                <Divider variant="middle" orientation="vertical" flexItem />
-            )}
-
-            {showPreviousButton && (
+            {showPreviousButton && <Divider variant="middle" orientation="vertical" flexItem />}
+            {showPreviousButton && !showLoadingPreviousButton && (
                 <Button
                     variant="outlined"
                     color="primary"
@@ -110,6 +124,7 @@ export const DetailToolbar = ({
                     Voltar
                 </Button>
             )}
+            {showLoadingPreviousButton && <Skeleton width={110} height={60} />}
         </Box>
     );
 };
