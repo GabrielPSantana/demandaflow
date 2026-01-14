@@ -2,11 +2,18 @@ import { Box, IconButton, Typography, useMediaQuery, useTheme } from '@mui/mater
 import type { ReactNode } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useDrawerContext } from '../contexts';
+
 interface IBasePageLayoutProps {
     children: ReactNode;
     title: string;
+    barraDeFerramentas?: ReactNode;
 }
-export const BasePageLayout: React.FC<IBasePageLayoutProps> = ({ children, title }) => {
+
+export const BasePageLayout: React.FC<IBasePageLayoutProps> = ({
+    children,
+    title,
+    barraDeFerramentas,
+}) => {
     const theme = useTheme();
     const smDown = useMediaQuery(theme.breakpoints.down('sm'));
     const { toggleDrawerOpen } = useDrawerContext();
@@ -20,7 +27,7 @@ export const BasePageLayout: React.FC<IBasePageLayoutProps> = ({ children, title
                 )}
                 <Typography variant="h5">{title}</Typography>
             </Box>
-            <Box>Barra de ferramentas</Box>
+            {barraDeFerramentas && <Box>{barraDeFerramentas}</Box>}
             <Box>{children}</Box>
         </Box>
     );
