@@ -9,7 +9,7 @@ interface IListItemLinkProps {
     onClick: (() => void) | undefined;
 }
 
-export const ListItemLink: React.FC<IListItemLinkProps> = ({ to, icon, label, onClick }) => {
+export const ListItemLink = ({ to, icon, label, onClick }: IListItemLinkProps) => {
     const resolvePath = useResolvedPath(to);
     const match = useMatch({ path: resolvePath.pathname, end: true });
 

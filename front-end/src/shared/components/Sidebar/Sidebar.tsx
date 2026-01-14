@@ -1,15 +1,4 @@
-import {
-    Avatar,
-    Box,
-    Divider,
-    Drawer,
-    List,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-    useMediaQuery,
-    useTheme,
-} from '@mui/material';
+import { Avatar, Box, Divider, Drawer, List, ListItemButton, ListItemIcon, ListItemText, useMediaQuery, useTheme } from '@mui/material';
 import TaskIcon from '@mui/icons-material/Task';
 import { useAppThemeContext, useDrawerContext } from '../../contexts';
 import { ListItemLink } from '../ListItemLink/ListItemLink';
@@ -18,7 +7,7 @@ interface IAppThemeProviderProps {
     children: React.ReactNode;
 }
 
-export const Sidebar: React.FC<IAppThemeProviderProps> = ({ children }) => {
+export const Sidebar = ({ children }: IAppThemeProviderProps) => {
     const theme = useTheme();
     const smDown = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -58,10 +47,13 @@ export const Sidebar: React.FC<IAppThemeProviderProps> = ({ children }) => {
                     </Box>
 
                     <Box>
-                        <ListItemButton onClick={toggleTheme}>
+                        <ListItemButton
+                            onClick={toggleTheme}
+                        >
                             <DarkModeIcon />
                             <ListItemText primary="Alternar tema" />
                         </ListItemButton>
+
                     </Box>
                 </Box>
             </Drawer>

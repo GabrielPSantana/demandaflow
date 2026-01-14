@@ -15,7 +15,7 @@ export const useDrawerContext = () => {
     return useContext(DrawerContext);
 };
 
-export const DrawerProvider: React.FC<IAppDrawerProviderProps> = ({ children }) => {
+export const DrawerProvider = ({ children }: IAppDrawerProviderProps) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
     const toggleDrawerOpen = useCallback(() => {
