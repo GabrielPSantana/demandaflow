@@ -4,19 +4,18 @@ import {
     Divider,
     Drawer,
     List,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
     useMediaQuery,
     useTheme,
 } from '@mui/material';
 import TaskIcon from '@mui/icons-material/Task';
-import { Link } from 'react-router-dom';
 import { useDrawerContext } from '../../contexts';
+import { ListItemLink } from '../ListItemLink/ListItemLink';
+import PeopleIcon from '@mui/icons-material/People';
 
 interface IAppThemeProviderProps {
     children: React.ReactNode;
 }
+
 
 export const Sidebar: React.FC<IAppThemeProviderProps> = ({ children }) => {
     const theme = useTheme();
@@ -26,7 +25,11 @@ export const Sidebar: React.FC<IAppThemeProviderProps> = ({ children }) => {
 
     return (
         <>
-            <Drawer open={isDrawerOpen} variant={smDown ? 'temporary' : 'permanent'} onClose={toggleDrawerOpen}>
+            <Drawer
+                open={isDrawerOpen}
+                variant={smDown ? 'temporary' : 'permanent'}
+                onClose={toggleDrawerOpen}
+            >
                 <Box width={theme.spacing(28)} display="flex" flexDirection="column" height="100%">
                     <Box
                         width="100%"
@@ -43,12 +46,8 @@ export const Sidebar: React.FC<IAppThemeProviderProps> = ({ children }) => {
                     <Divider />
                     <Box flex={1}>
                         <List component="nav">
-                            <ListItemButton component={Link} to="/">
-                                <ListItemIcon>
-                                    <TaskIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Atividades" />
-                            </ListItemButton>
+                            <ListItemLink icon={<TaskIcon />} to="/" label="Atividades" onClick={toggleDrawerOpen}/>
+                            <ListItemLink icon={<PeopleIcon />} to="/Profile" label="Perfil" onClick={undefined}/>
                         </List>
                     </Box>
                 </Box>
