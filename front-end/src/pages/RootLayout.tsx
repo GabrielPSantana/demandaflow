@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
+import { Sidebar } from "../shared/components/Sidebar/Sidebar";
 
 export default function RootLayout() {
+ 
   return (
-    <div className="app-container">      
-      <main className="content">
+    <Sidebar>
         <Outlet />
-      </main>
-    </div>
+    </Sidebar>
   );
 }
