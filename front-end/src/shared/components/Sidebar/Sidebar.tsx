@@ -7,10 +7,12 @@ import {
     ListItemButton,
     ListItemIcon,
     ListItemText,
+    useMediaQuery,
     useTheme,
 } from '@mui/material';
 import TaskIcon from '@mui/icons-material/Task';
 import { Link } from 'react-router-dom';
+import { useDrawerContext } from '../../contexts';
 
 interface IAppThemeProviderProps {
     children: React.ReactNode;
@@ -18,10 +20,13 @@ interface IAppThemeProviderProps {
 
 export const Sidebar: React.FC<IAppThemeProviderProps> = ({ children }) => {
     const theme = useTheme();
+    const smDown = useMediaQuery(theme.breakpoints.down('sm'));
+
+    const { isDrawerOpen, toggleDrawerOpen } = useDrawerContext();
 
     return (
         <>
-            <Drawer open={true} variant="permanent">
+            <Drawer open={isDrawerOpen} variant={smDown ? 'temporary' : 'permanent'} onClose={toggleDrawerOpen}>
                 <Box width={theme.spacing(28)} display="flex" flexDirection="column" height="100%">
                     <Box
                         width="100%"
@@ -38,7 +43,7 @@ export const Sidebar: React.FC<IAppThemeProviderProps> = ({ children }) => {
                     <Divider />
                     <Box flex={1}>
                         <List component="nav">
-                            <ListItemButton  component={Link} to="/">
+                            <ListItemButton component={Link} to="/">
                                 <ListItemIcon>
                                     <TaskIcon />
                                 </ListItemIcon>
@@ -48,7 +53,7 @@ export const Sidebar: React.FC<IAppThemeProviderProps> = ({ children }) => {
                     </Box>
                 </Box>
             </Drawer>
-            <Box height="100vh" marginLeft={theme.spacing(28)}>
+            <Box height="100vh" marginLeft={smDown ? 0 : theme.spacing(28)}>
                 {children}
             </Box>
         </>
