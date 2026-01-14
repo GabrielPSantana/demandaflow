@@ -1,4 +1,13 @@
-import { Box, Button, Divider, Paper, Skeleton, useTheme } from '@mui/material';
+import {
+    Box,
+    Button,
+    Divider,
+    Paper,
+    Skeleton,
+    Typography,
+    useMediaQuery,
+    useTheme,
+} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -49,6 +58,9 @@ export const DetailToolbar = ({
 }: IDetailToolbar) => {
     const theme = useTheme();
 
+    const smDown = useMediaQuery(theme.breakpoints.down('sm'));
+    const mdDown = useMediaQuery(theme.breakpoints.down('md'));
+
     return (
         <Box
             display="flex"
@@ -59,6 +71,7 @@ export const DetailToolbar = ({
             alignItems="center"
             height={theme.spacing(6)}
             component={Paper}
+            justifyContent="start"
         >
             {showSaveButton && !showLoadingSaveButton && (
                 <Button
@@ -68,12 +81,21 @@ export const DetailToolbar = ({
                     startIcon={<SaveIcon />}
                     onClick={onClickSaveButton}
                 >
-                    Salvar
+                    {(!smDown || !mdDown) && (
+                        <Typography
+                            variant="button"
+                            whiteSpace="nowrap"
+                            textOverflow="ellipsis"
+                            overflow="hidden"
+                        >
+                            Salvar
+                        </Typography>
+                    )}
                 </Button>
             )}
             {showLoadingSaveButton && <Skeleton width={110} height={60} />}
 
-            {showSaveAndCloseButton && !showLoadingSaveAndCloseButton && (
+            {showSaveAndCloseButton && !showLoadingSaveAndCloseButton && !smDown && !mdDown && (
                 <Button
                     variant="outlined"
                     color="primary"
@@ -81,10 +103,19 @@ export const DetailToolbar = ({
                     startIcon={<SaveIcon />}
                     onClick={onClickSaveAndCloseButton}
                 >
-                    Salvar e voltar
+                    <Typography
+                        variant="button"
+                        whiteSpace="nowrap"
+                        textOverflow="ellipsis"
+                        overflow="hidden"
+                    >
+                        Salvar e voltar
+                    </Typography>
                 </Button>
             )}
-            {showLoadingSaveAndCloseButton && <Skeleton width={180} height={60} />}
+            {showLoadingSaveAndCloseButton && !smDown && !mdDown && (
+                <Skeleton width={180} height={60} />
+            )}
 
             {showDeleteButton && !showLoadingDeleteButton && (
                 <Button
@@ -94,12 +125,21 @@ export const DetailToolbar = ({
                     startIcon={<DeleteIcon />}
                     onClick={onClickDeleteButton}
                 >
-                    Apagar
+                    {(!smDown || !mdDown) && (
+                        <Typography
+                            variant="button"
+                            whiteSpace="nowrap"
+                            textOverflow="ellipsis"
+                            overflow="hidden"
+                        >
+                            Apagar
+                        </Typography>
+                    )}
                 </Button>
             )}
             {showLoadingDeleteButton && <Skeleton width={110} height={60} />}
 
-            {showNewButton && !showLoadingNewButton && (
+            {showNewButton && !showLoadingNewButton && !smDown && !mdDown && (
                 <Button
                     variant="outlined"
                     color="primary"
@@ -107,10 +147,17 @@ export const DetailToolbar = ({
                     startIcon={<AddIcon />}
                     onClick={onClickNewButton}
                 >
-                    {newButtonText}
+                    <Typography
+                        variant="button"
+                        whiteSpace="nowrap"
+                        textOverflow="ellipsis"
+                        overflow="hidden"
+                    >
+                        {newButtonText}
+                    </Typography>
                 </Button>
             )}
-            {showLoadingNewButton && <Skeleton width={110} height={60} />}
+            {showLoadingNewButton && !smDown && !mdDown && <Skeleton width={110} height={60} />}
 
             {showPreviousButton && <Divider variant="middle" orientation="vertical" flexItem />}
             {showPreviousButton && !showLoadingPreviousButton && (
@@ -121,7 +168,16 @@ export const DetailToolbar = ({
                     startIcon={<ArrowBackIcon />}
                     onClick={onClickPreviousButton}
                 >
-                    Voltar
+                    {(!smDown || !mdDown) && (
+                        <Typography
+                            variant="button"
+                            whiteSpace="nowrap"
+                            textOverflow="ellipsis"
+                            overflow="hidden"
+                        >
+                            Voltar
+                        </Typography>
+                    )}
                 </Button>
             )}
             {showLoadingPreviousButton && <Skeleton width={110} height={60} />}
