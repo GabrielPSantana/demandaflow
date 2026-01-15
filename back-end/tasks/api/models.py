@@ -1,6 +1,6 @@
 from django.db import models
 import uuid
-from django.db import models
+from .managers import TaskManager
 
 class Tasks(models.Model):
     class Priority(models.TextChoices):
@@ -26,6 +26,8 @@ class Tasks(models.Model):
     team_id = models.UUIDField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    objects = TaskManager()
 
     def __str__(self):
         return self.title
