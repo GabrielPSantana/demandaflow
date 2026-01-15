@@ -2,12 +2,12 @@ from django.db import models
 import uuid
 from .managers import TaskManager
 
-class Tasks(models.Model):
+class Task(models.Model):
     class Priority(models.TextChoices):
-        LOW = 'LOW',
-        MEDIUM = 'MEDIUM',
-        HIGH = 'HIGH', 
-        CRITICAL = 'CRITICAL',
+        LOW = 'LOW'
+        MEDIUM = 'MEDIUM'
+        HIGH = 'HIGH'
+        CRITICAL = 'CRITICAL'
     
     class Status(models.TextChoices):
         PENDING = 'PENDING',
