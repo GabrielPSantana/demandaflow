@@ -14,18 +14,21 @@ class Task(models.Model):
         IN_PROGRESS = 'IN_PROGRESS',
         COMPLETED = 'COMPLETED',
     
-    tasks_id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    task_id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     published = models.BooleanField(default=True)
-    title = models.CharField( max_length=100)
+    title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     priority = models.CharField(max_length=20, choices=Priority.choices)
     start_datetime = models.DateTimeField(null=True, blank=True)
     end_datetime = models.DateTimeField(null=True, blank=True)
     time_spent = models.DurationField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=Status.choices)
-    team_id = models.UUIDField(blank=True, null=True)
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    user_id = models.UUIDField(blank=False, null=False) 
+    team_id = models.UUIDField(blank=True, null=True)
 
     objects = TaskManager()
 
