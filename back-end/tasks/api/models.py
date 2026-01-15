@@ -1,6 +1,4 @@
 from django.db import models
-
-# Create your models here.
 import uuid
 from django.db import models
 
@@ -17,6 +15,7 @@ class Tasks(models.Model):
         COMPLETED = 'COMPLETED',
     
     tasks_id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    published = models.BooleanField(default=True)
     title = models.CharField( max_length=100)
     description = models.TextField(blank=True, null=True)
     priority = models.CharField(max_length=20, choices=Priority.choices)
