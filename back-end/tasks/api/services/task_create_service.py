@@ -22,7 +22,7 @@ class TaskCreateService(TaskService):
             if start_datetime and end_datetime:
                 time_spent = time_spent_util(start_datetime, end_datetime)
 
-            task = Task.objects.create(
+            task = Task(
                 user_id=user_id,
                 title=title,
                 description=description,
@@ -35,7 +35,14 @@ class TaskCreateService(TaskService):
                 published=published
             )
 
+            task.full_clean()
+
+            task.save()
             return task
+            
+        except ValidationError as error:
+            raise error
 
         except Exception as e:
-            raise ValidationError(f"Ocorreu um erro ao criar a task:")
+
+            raise Exception("Ocorreu um erro interno ao processar a criação da task.")
