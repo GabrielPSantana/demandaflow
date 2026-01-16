@@ -1,13 +1,13 @@
 from rest_framework import status
 from rest_framework.response import Response
-from ..serializers import TaskSerializer
-from ..services import TaskCreateService
+from ..serializers.task_serializer import TaskSerializer
+from ..services.task_update_service import TaskUpdateService
 from .task_view_set import TaskViewSet
 
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
-class TaskCreateViewSet(TaskViewSet):
+class TaskUpdateViewSet(TaskViewSet):
     @swagger_auto_schema(
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
@@ -27,33 +27,34 @@ class TaskCreateViewSet(TaskViewSet):
         responses={201: TaskSerializer}
     )
 
-    def create(self, request):
+    def update(self, request):
         data = request.data
 
-        if not data.get('user_id') or not data.get('title'):
+        if not data.get('user_id') and not data.get('task_id'):
             return Response(
                 {"error": "Campos inválidos."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
         try:
-            task = TaskCreateService().execute(
+            task = TaskUpdateService().execute(
                 user_id=data.get('user_id'),
+                task_id=data.get('task_id'),
                 title=data.get('title'),
                 description=data.get('description'),
                 team_id=data.get('team_id'),
-                priority=data.get('priority', 'LOW'),
-                status=data.get('status', 'PENDING'),
+                priority=data.get('priority'),
+                status=data.get('status'),
                 start_datetime=data.get('start_datetime'),
                 end_datetime=data.get('end_datetime'),
                 time_spent=data.get('time_spent'),
-                published=data.get('published', True)
             )
+
             return Response(TaskSerializer(task).data, status=status.HTTP_201_CREATED)
 
         except Exception as e:
             return Response(
-                {"error": "Ocorreu um erro ao processar a requisição.", "details": str(e)},
+                {"error": "Ocorreu um erro ao processar a requisição."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
