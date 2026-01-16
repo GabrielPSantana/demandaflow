@@ -1,8 +1,9 @@
 from api.models import Task
 from datetime import datetime
 from django.core.exceptions import ValidationError
+from .task_service import TaskService
 
-class CreateTaskService:
+class CreateTaskService(TaskService):
     def execute(
         self,
         user_id,
