@@ -35,7 +35,8 @@ class Command(BaseCommand):
                 start_datetime=start_dt,
                 end_datetime=end_dt,
                 time_spent=duration,
-                team_id=uuid.uuid4()
+                user_id=uuid.uuid4(),              # 🔴 OBRIGATÓRIO
+                team_id=random.choice([uuid.uuid4(), None])  # opcional
             )
 
             tasks_to_create.append(task)
