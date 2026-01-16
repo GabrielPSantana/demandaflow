@@ -20,7 +20,6 @@ class TaskListViewSet(TaskViewSet):
             ),
         ]
     )
-
     def list(self, request):
         try:
             task_serialized = TaskListSerializer(data=request.query_params)
