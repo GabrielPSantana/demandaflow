@@ -1,10 +1,13 @@
 from rest_framework.response import Response
-from ..serializers import TaskSerializer
+from rest_framework import status
+from ..serializers import TaskSerializer, TaskListSerializer
 from ..services import ListTaskService
 from .task_view_set import TaskViewSet
-
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+import logging
+
+logger = logging.getLogger(__name__)
 
 class TaskListViewSet(TaskViewSet):
     @swagger_auto_schema(
@@ -20,17 +23,31 @@ class TaskListViewSet(TaskViewSet):
             ),
         ]
     )
-    
     def list(self, request):
-        team_id = request.query_params.get('team_id')
-        is_manager = request.query_params.get('is_manager', 'false').lower() == 'true'
-        user_id = request.query_params.get('user_id')
+        try:
+            serializer = TaskListSerializer(data=request.query_params)
 
-        if not user_id:
-            return Response(
-                {"error": "Parâmetros inválidos."},
-                status=400
+            if not serializer.is_valid():
+                return Response(
+                    {"error": "Parâmetros inválidos."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            data = serializer.validated_data
+
+            tasks = ListTaskService().execute(
+                user_id=data["user_id"],
+                team_id=data.get("team_id"),
+                is_manager=data.get("is_manager", False),
             )
-        
-        tasks = ListTaskService().execute(user_id=user_id, team_id=team_id, is_manager=is_manager)
-        return Response(TaskSerializer(tasks, many=True).data)
+
+            return Response(
+                TaskSerializer(tasks, many=True).data,
+                status=status.HTTP_200_OK
+            )
+
+        except Exception as e:
+            return Response(
+                {"error": "Ocorreu um erro ao processar a requisição."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
