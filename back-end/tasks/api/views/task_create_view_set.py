@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.response import Response
-from ..serializers import TaskSerializer
-from ..services import TaskCreateService
+from ..serializers.task_serializer import TaskSerializer
+from ..services.create_task_service import TaskCreateService
 from .task_view_set import TaskViewSet
 
 from drf_yasg.utils import swagger_auto_schema

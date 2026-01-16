@@ -10,9 +10,6 @@ class TaskQuerySet(models.QuerySet):
     def by_user_without_team(self, user_id):
         return self.filter(user_id=user_id, team_id__isnull=True)
 
-    def by_task_id_and_user_id(self, task_id, user_id):
-        return self.filter(task_id=task_id, user_id=user_id)
-    
 class TaskManager(models.Manager):
     def get_queryset(self):
         return TaskQuerySet(self.model, using=self._db)
@@ -25,6 +22,3 @@ class TaskManager(models.Manager):
 
     def by_user_without_team(self, user_id):
         return self.get_queryset().by_user_without_team(user_id)
-
-    def by_task_id_and_user_id(self, task_id, user_id):
-        return self.get_queryset().by_task_id_and_user_id(task_id=task_id, user_id=user_id)
