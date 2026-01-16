@@ -1,13 +1,13 @@
 from rest_framework import status
 from rest_framework.response import Response
-from api.serializers import TaskSerializer
-from api.services import CreateTaskService
-from api.views import TaskViewSet
+from ..serializers.task_serializer import TaskSerializer
+from ..services.create_task_service import CreateTaskService
+from .task_view_set import TaskViewSet
 
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
-class TaskViewSet(TaskViewSet):
+class TaskCreateViewSet(TaskViewSet):
     @swagger_auto_schema(
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
@@ -33,7 +33,7 @@ class TaskViewSet(TaskViewSet):
 
         if not data.get('user_id') or not data.get('title'):
             return Response(
-                {"error": "Campos obrigatórios ausentes ou inválidos."},
+                {"error": "Campos inválidos."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -52,8 +52,9 @@ class TaskViewSet(TaskViewSet):
             )
             return Response(TaskSerializer(task).data, status=status.HTTP_201_CREATED)
 
-        except Exception:
+        except Exception as e:
             return Response(
-                {"error": "Ocorreu um erro ao processar a requisição."},
+                {"error": "Ocorreu um erro ao processar a requisição.", "details": str(e)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
