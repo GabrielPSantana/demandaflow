@@ -28,9 +28,9 @@ class TaskCreateViewSet(TaskViewSet):
     )
 
     def create(self, request):
-        data = request.data
+        data_request = request.data
 
-        if not data.get('user_id') or not data.get('title'):
+        if not data_request.get('user_id') or not data_request.get('title'):
             return Response(
                 {"error": "Campos inválidos."},
                 status=status.HTTP_400_BAD_REQUEST
@@ -38,22 +38,23 @@ class TaskCreateViewSet(TaskViewSet):
 
         try:
             task = TaskCreateService().execute(
-                user_id=data.get('user_id'),
-                title=data.get('title'),
-                description=data.get('description'),
-                team_id=data.get('team_id'),
-                priority=data.get('priority', 'LOW'),
-                status=data.get('status', 'PENDING'),
-                start_datetime=data.get('start_datetime'),
-                end_datetime=data.get('end_datetime'),
-                time_spent=data.get('time_spent'),
-                published=data.get('published', True)
+                user_id=data_request.get('user_id'),
+                title=data_request.get('title'),
+                description=data_request.get('description'),
+                team_id=data_request.get('team_id'),
+                priority=data_request.get('priority'),
+                status=data_request.get('status'),
+                start_datetime=data_request.get('start_datetime'),
+                end_datetime=data_request.get('end_datetime'),
+                time_spent=data_request.get('time_spent'),
+                published=data_request.get('published', True)
             )
+            
             return Response(TaskSerializer(task).data, status=status.HTTP_201_CREATED)
 
         except Exception as e:
             return Response(
-                {"error": "Ocorreu um erro ao processar a requisição.", "details": str(e)},
+                {"error": "Ocorreu um erro ao processar a requisição."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
