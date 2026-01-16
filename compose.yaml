@@ -8,3 +8,14 @@ services:
     volumes:
       - ./front-end:/app
     command: sh -c "npm install && npm run dev -- --host"
+
+  task-service:
+    container_name: task-service
+    build:
+      context: ./back-end/task-service
+      dockerfile: Dockerfile
+    volumes:
+      - ./back-end/task-service:/app
+      - ./back-end/task-service/db:/app/db
+    ports:
+      - "8000:8000"
