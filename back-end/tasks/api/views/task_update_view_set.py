@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from ..serializers.task_serializer import TaskSerializer
 from ..services.task_update_service import TaskUpdateService
 from .task_view_set import TaskViewSet
+from django.core.exceptions import ValidationError
 
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
@@ -51,6 +52,12 @@ class TaskUpdateViewSet(TaskViewSet):
             )
 
             return Response(TaskSerializer(task).data, status=status.HTTP_200_OK)
+
+        except ValidationError as e:
+            return Response(
+                {"error": "Registro não encontrado."}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
 
         except Exception as e:
             return Response(
