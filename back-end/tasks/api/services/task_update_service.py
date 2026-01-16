@@ -1,13 +1,13 @@
 from api.models import Task
-from datetime import datetime
 from django.core.exceptions import ValidationError
 from .task_service import TaskService
-from ..utils import time_spent_util 
+from ..utils.time_spent_util import time_spent_util
 
 class TaskUpdateService(TaskService):
     def execute(
         self,
         task_id,
+        team_id,
         user_id,
         title,
         description,
@@ -36,7 +36,5 @@ class TaskUpdateService(TaskService):
 
             return task
 
-        except ValidationError:
-            raise
         except Exception as e:
-            raise ValidationError(f"Ocorreu um erro ao atualizar a task")
+            raise ValidationError("Ocorreu um erro ao atualizar a task")
