@@ -1,5 +1,6 @@
 from rest_framework import status
 from rest_framework.response import Response
+from django.core.exceptions import ValidationError
 from ..serializers import TaskSerializer
 from ..services import TaskCreateService
 from .task_view_set import TaskViewSet
@@ -52,9 +53,15 @@ class TaskCreateViewSet(TaskViewSet):
             
             return Response(TaskSerializer(task).data, status=status.HTTP_201_CREATED)
 
-        except Exception as e:
+        except ValidationError as error:
             return Response(
-                {"error": "Ocorreu um erro ao processar a requisição."},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                {"error": "Dados inválidos para a criação da task."}, 
+                status=status.HTTP_400_BAD_REQUEST
             )
 
+        except Exception as error:
+
+            return Response(
+                {"error": "Ocorreu um erro interno ao processar a requisição."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
