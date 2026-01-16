@@ -2,16 +2,16 @@ from django.db import models
 
 class TaskQuerySet(models.QuerySet):
     def by_team(self, team_id):
-        return self.filter(team_id=team_id)
+        return self.filter(team_id=team_id, published=True)
 
     def by_user_in_team(self, user_id, team_id):
-        return self.filter(user_id=user_id, team_id=team_id)
+        return self.filter(user_id=user_id, team_id=team_id, published=True)
 
     def by_user_without_team(self, user_id):
-        return self.filter(user_id=user_id, team_id__isnull=True)
+        return self.filter(user_id=user_id, team_id__isnull=True, published=True)
 
     def by_task_id_and_user_id(self, task_id, user_id):
-        return self.filter(task_id=task_id, user_id=user_id).first()
+        return self.filter(task_id=task_id, user_id=user_id, published=True).first()
     
 class TaskManager(models.Manager):
     def get_queryset(self):
