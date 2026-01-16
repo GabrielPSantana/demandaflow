@@ -54,6 +54,6 @@ class TaskUpdateViewSet(TaskViewSet):
 
         except Exception as e:
             return Response(
-                {"error": f'Ocorreu um erro ao processar a requisição. {e}'},
+                {"error": f'Ocorreu um erro ao processar a requisição.'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
