@@ -5,9 +5,6 @@ from ..services import TaskListService
 from .task_view_set import TaskViewSet
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
-import logging
-
-logger = logging.getLogger(__name__)
 
 class TaskListViewSet(TaskViewSet):
     @swagger_auto_schema(
@@ -23,6 +20,7 @@ class TaskListViewSet(TaskViewSet):
             ),
         ]
     )
+
     def list(self, request):
         try:
             task_serialized = TaskListSerializer(data=request.query_params)
