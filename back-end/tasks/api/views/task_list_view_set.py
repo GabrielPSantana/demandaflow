@@ -25,20 +25,20 @@ class TaskListViewSet(TaskViewSet):
     )
     def list(self, request):
         try:
-            serializer = TaskListSerializer(data=request.query_params)
+            task_serialized = TaskListSerializer(data=request.query_params)
 
-            if not serializer.is_valid():
+            if not task_serialized.is_valid():
                 return Response(
                     {"error": "Parâmetros inválidos."},
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
-            data = serializer.validated_data
+            data_task_serialized = task_serialized.validated_data
 
             tasks = ListTaskService().execute(
-                user_id=data["user_id"],
-                team_id=data.get("team_id"),
-                is_manager=data.get("is_manager", False),
+                user_id=data_task_serialized["user_id"],
+                team_id=data_task_serialized.get("team_id"),
+                is_manager=data_task_serialized.get("is_manager", False),
             )
 
             return Response(
