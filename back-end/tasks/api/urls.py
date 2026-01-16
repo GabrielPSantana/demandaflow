@@ -4,4 +4,5 @@ from api.views import TaskViewSet
 
 urlpatterns = [
     path('tasks/', TaskViewSet.as_view({'get': 'list'}), name='task-list'),
+    
 ]
