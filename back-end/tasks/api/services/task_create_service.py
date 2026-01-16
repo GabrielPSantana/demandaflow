@@ -2,6 +2,7 @@ from api.models import Task
 from datetime import datetime
 from django.core.exceptions import ValidationError
 from .task_service import TaskService
+from ..utils.time_spent_util import time_spent_util
 
 class TaskCreateService(TaskService):
     def execute(
@@ -19,17 +20,7 @@ class TaskCreateService(TaskService):
     ):
         try:
             if start_datetime and end_datetime:
-                try:
-                    start_str = start_datetime
-                    end_str = end_datetime
-
-                    start_datetime = datetime.fromisoformat(start_str.replace("Z", "+00:00"))
-                    end_datetime = datetime.fromisoformat(end_str.replace("Z", "+00:00"))
-
-                except ValueError as e:
-                    raise ValidationError(f"Formato inválido de data/hora: {e}")
-
-                time_spent = end_datetime - start_datetime
+                time_spent = time_spent_util(start_datetime, end_datetime)
 
             task = Task.objects.create(
                 user_id=user_id,
@@ -47,4 +38,4 @@ class TaskCreateService(TaskService):
             return task
 
         except Exception as e:
-            raise ValidationError(f"Ocorreu um erro ao criar a task: {e}")
+            raise ValidationError(f"Ocorreu um erro ao criar a task:")
