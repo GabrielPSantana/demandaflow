@@ -1,5 +1,6 @@
 import { Box, Button, Paper, TextField, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import { Environment } from '../../environment';
 
 interface IListToolbarPros {
     searchText?: string;
@@ -36,7 +37,7 @@ export const ListToolbar = ({
                     value={searchText}
                     onChange={(event) => onSearchTextChange?.(event.target.value)}
                     size="small"
-                    placeholder="Pesquisar..."
+                    placeholder={Environment.SEARCH_INPUT_PLACEHOLDER}
                 />
             )}
             <Box display="flex" justifyContent="end" flex={1}>
