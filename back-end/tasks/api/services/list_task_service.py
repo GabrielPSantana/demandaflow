@@ -1,6 +1,7 @@
 from api.models import Task
+from .task_service import TaskService
 
-class ListTaskService:
+class ListTaskService(TaskService):
     def execute(self, user_id, team_id=None, is_manager=False):
         try:
             task_repository = Task.objects
