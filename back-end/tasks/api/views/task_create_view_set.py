@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.response import Response
 from ..serializers.task_serializer import TaskSerializer
-from ..services.create_task_service import CreateTaskService
+from ..services.create_task_service import TaskCreateService
 from .task_view_set import TaskViewSet
 
 from drf_yasg.utils import swagger_auto_schema
@@ -37,7 +37,7 @@ class TaskCreateViewSet(TaskViewSet):
             )
 
         try:
-            task = CreateTaskService().execute(
+            task = TaskCreateService().execute(
                 user_id=data.get('user_id'),
                 title=data.get('title'),
                 description=data.get('description'),

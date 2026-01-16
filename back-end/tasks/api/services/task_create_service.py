@@ -3,7 +3,7 @@ from datetime import datetime
 from django.core.exceptions import ValidationError
 from .task_service import TaskService
 
-class CreateTaskService(TaskService):
+class TaskCreateService(TaskService):
     def execute(
         self,
         user_id,
