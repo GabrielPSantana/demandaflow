@@ -1,8 +1,7 @@
 from django.urls import path
-from api import views
-from api.views import TaskViewSet
+from api.views import TaskListViewSet
 
 urlpatterns = [
-    path('tasks/', TaskViewSet.as_view({'get': 'list'}), name='task-list'),
+    path('tasks/', TaskListViewSet.as_view({'get': 'list'}), name='task-list'),
     
 ]

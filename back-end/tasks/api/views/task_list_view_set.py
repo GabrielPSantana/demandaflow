@@ -1,12 +1,12 @@
-from rest_framework import viewsets
 from rest_framework.response import Response
-from api.serializers import TaskSerializer
-from api.services import ListTaskService
+from ..serializers import TaskSerializer
+from ..services import ListTaskService
+from .task_view_set import TaskViewSet
 
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
-class TaskViewSet(viewsets.ViewSet):
+class TaskListViewSet(TaskViewSet):
     @swagger_auto_schema(
         manual_parameters=[
             openapi.Parameter(
@@ -20,7 +20,7 @@ class TaskViewSet(viewsets.ViewSet):
             ),
         ]
     )
-
+    
     def list(self, request):
         team_id = request.query_params.get('team_id')
         is_manager = request.query_params.get('is_manager', 'false').lower() == 'true'
@@ -28,7 +28,7 @@ class TaskViewSet(viewsets.ViewSet):
 
         if not user_id:
             return Response(
-                {"error": "Parâmetros insuficientes ou inválidos"},
+                {"error": "Parâmetros inválidos."},
                 status=400
             )
         
