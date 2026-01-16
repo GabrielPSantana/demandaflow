@@ -8,13 +8,13 @@ class CreateTaskService(TaskService):
         self,
         user_id,
         title,
-        description=None,
-        team_id=None,
-        priority='LOW',
-        status='PENDING',
-        start_datetime=None,
-        end_datetime=None,
-        time_spent=None,
+        description,
+        team_id,
+        priority,
+        status',
+        start_datetime,
+        end_datetime,
+        time_spent,
         published=True
     ):
         try:
