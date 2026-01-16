@@ -11,7 +11,7 @@ class TaskQuerySet(models.QuerySet):
         return self.filter(user_id=user_id, team_id__isnull=True)
 
     def by_task_id_and_user_id(self, task_id, user_id):
-        return self.filter(task_id=task_id, user_id=user_id)
+        return self.filter(task_id=task_id, user_id=user_id).first()
     
 class TaskManager(models.Manager):
     def get_queryset(self):
