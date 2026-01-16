@@ -22,7 +22,6 @@ class TaskCreateViewSet(TaskViewSet):
                 'start_datetime': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME, description='Data/hora de início', default=None),
                 'end_datetime': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_DATETIME, description='Data/hora de término', default=None),
                 'time_spent': openapi.Schema(type=openapi.TYPE_STRING, description='Tempo gasto (HH:MM:SS)', default=None),
-                'published': openapi.Schema(type=openapi.TYPE_BOOLEAN, description='Se está publicada', default=True),
             },
         ),
         responses={201: TaskSerializer}
