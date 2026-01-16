@@ -11,7 +11,7 @@ class CreateTaskService(TaskService):
         description,
         team_id,
         priority,
-        status',
+        status,
         start_datetime,
         end_datetime,
         time_spent,
