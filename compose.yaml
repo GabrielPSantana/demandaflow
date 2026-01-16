@@ -1,7 +1,9 @@
 services:
   frontend:
     container_name: frontend
-    image: node:22
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
     working_dir: /app
     ports:
       - "5173:5173"
