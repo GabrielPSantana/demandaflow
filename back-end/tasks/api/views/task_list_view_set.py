@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework import status
 from ..serializers import TaskSerializer, TaskListSerializer
-from ..services import ListTaskService
+from ..services import TaskListService
 from .task_view_set import TaskViewSet
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
@@ -35,7 +35,7 @@ class TaskListViewSet(TaskViewSet):
 
             data_task_serialized = task_serialized.validated_data
 
-            tasks = ListTaskService().execute(
+            tasks = TaskListService().execute(
                 user_id=data_task_serialized["user_id"],
                 team_id=data_task_serialized.get("team_id"),
                 is_manager=data_task_serialized.get("is_manager", False),
