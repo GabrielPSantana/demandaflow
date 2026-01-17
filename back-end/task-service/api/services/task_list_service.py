@@ -1,18 +1,14 @@
 from api.models import Task
 from .task_service import TaskService
+from django.core.exceptions import ValidationError
 
 class TaskListService(TaskService):
-    def execute(self, user_id, team_id=None, is_manager=False):
+    def execute(self, user_id, search):
         try:
-            task_repository = Task.objects
-
-            if is_manager and team_id:
-                return task_repository.by_team(team_id)
-
-            if team_id:
-                return task_repository.by_user_in_team(user_id, team_id)
-
-            return task_repository.by_user_without_team(user_id)
-
+            return Task.objects.by_title(user_id, search)
+        
+        except ValidationError as error:
+            raise error
+        
         except Exception as e:
-            raise Exception("Erro ao listar tasks.")
+            raise Exception(f'Erro ao listar a task. {e}')
