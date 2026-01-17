@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 from rest_framework import status
-from ..serializers import TaskSerializer, TaskListSerializer
+from ..serializers import TaskSerializer
 from ..services import TaskListService
 from .task_view_set import TaskViewSet
 from drf_yasg.utils import swagger_auto_schema
@@ -20,22 +20,28 @@ class TaskListViewSet(TaskViewSet):
             ),
         ]
     )
-    
+
+    def get_tasks_queryset(self):
+        search = self.request.query_params.get("search")
+
+        user_id = "d4f7c2a8-3e5b-4f1d-9b2a-6c8f1a2e7d9b"
+
+        return TaskListService().execute(
+            user_id=user_id,
+            search=search,
+        )
+
     def list(self, request):
         try:
-            team_id=request.query_params.get("team_id")
+            tasks_queryset = self.filter_queryset(self.get_tasks_queryset())
 
-            user_id='d4f7c2a8-3e5b-4f1d-9b2a-6c8f1a2e7d9b'
-            is_manager=True
+            tasks_page = self.paginate_queryset(tasks_queryset)
 
-            tasks = TaskListService().execute(
-                user_id=user_id,
-                team_id=team_id,
-                is_manager=is_manager,
-            )
+            if tasks_page is not None:
+                return self.get_paginated_response(TaskSerializer(tasks_page, many=True).data)
 
             return Response(
-                TaskSerializer(tasks, many=True).data,
+                TaskSerializer(tasks_queryset, many=True).data,
                 status=status.HTTP_200_OK
             )
 
