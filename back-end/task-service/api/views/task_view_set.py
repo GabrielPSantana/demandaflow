@@ -1,5 +1,8 @@
 from abc import ABC
-from rest_framework import viewsets
+from rest_framework.viewsets import GenericViewSet
+from .pagination import DefaultPagination
+from .filters import DefaultOrderingFilter
 
-class TaskViewSet(ABC, viewsets.ViewSet):
-    pass
+class TaskViewSet(ABC, GenericViewSet):
+    pagination_class = DefaultPagination
+    filter_backends = [DefaultOrderingFilter]
