@@ -8,7 +8,6 @@ class TaskUpdateService(TaskService):
     def execute(
         self,
         task_id,
-        team_id,
         user_id,
         title,
         description,

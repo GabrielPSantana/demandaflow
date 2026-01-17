@@ -28,22 +28,17 @@ class TaskUpdateViewSet(TaskViewSet):
         responses={201: TaskSerializer}
     )
 
-    def update(self, request):
+    def update(self, request, task_id):
         data_request = request.data
 
-        if not data_request.get('user_id') and not data_request.get('task_id'):
-            return Response(
-                {"error": "Campos inválidos."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
         try:
+            user_id='d4f7c2a8-3e5b-4f1d-9b2a-6c8f1a2e7d9b'
+
             task = TaskUpdateService().execute(
-                user_id=data_request.get('user_id'),
-                task_id=data_request.get('task_id'),
+                user_id=user_id,
+                task_id=task_id,
                 title=data_request.get('title'),
                 description=data_request.get('description'),
-                team_id=data_request.get('team_id'),
                 priority=data_request.get('priority'),
                 status=data_request.get('status'),
                 start_datetime=data_request.get('start_datetime'),
