@@ -31,7 +31,9 @@ class TaskCreateViewSet(TaskViewSet):
     def create(self, request):
         data_request = request.data
 
-        if not data_request.get('user_id') or not data_request.get('title'):
+        user_id='d4f7c2a8-3e5b-4f1d-9b2a-6c8f1a2e7d9b'  
+        
+        if not user_id or not data_request.get('title'):
             return Response(
                 {"error": "Campos inválidos."},
                 status=status.HTTP_400_BAD_REQUEST
@@ -39,7 +41,7 @@ class TaskCreateViewSet(TaskViewSet):
 
         try:
             task = TaskCreateService().execute(
-                user_id=data_request.get('user_id'),
+                user_id=user_id,
                 title=data_request.get('title'),
                 description=data_request.get('description'),
                 team_id=data_request.get('team_id'),
@@ -48,14 +50,13 @@ class TaskCreateViewSet(TaskViewSet):
                 start_datetime=data_request.get('start_datetime'),
                 end_datetime=data_request.get('end_datetime'),
                 time_spent=data_request.get('time_spent'),
-                published=data_request.get('published', True)
             )
             
             return Response(TaskSerializer(task).data, status=status.HTTP_201_CREATED)
 
         except ValidationError as error:
             return Response(
-                {"error": "Dados inválidos para a criação da task."}, 
+                {"error": f'Dados inválidos para a criação da task. {error}'}, 
                 status=status.HTTP_400_BAD_REQUEST
             )
 
