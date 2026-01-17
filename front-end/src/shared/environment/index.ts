@@ -18,4 +18,9 @@ export const Environment = {
      * URL base para consultas à API
      */
     BASE_URL: 'http://localhost:3333',
+
+       /**
+     * versao da API para consultas
+     */
+    API_V1_TASK: 'api/v1/tasks/'
 };
