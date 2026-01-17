@@ -4,12 +4,16 @@ services:
     build:
       context: ./front-end
       dockerfile: Dockerfile
-    working_dir: /app
     ports:
       - "5173:5173"
     volumes:
       - ./front-end:/app
-    command: sh -c "npm install && npm run dev -- --host"
+      - /app/node_modules
+    command: npm run dev -- --host 0.0.0.0
+    networks:
+      - task-network
+    depends_on:
+      - task-service
 
   task-service:
     container_name: task-service
@@ -21,3 +25,9 @@ services:
       - ./back-end/task-service/db:/app/db
     ports:
       - "8000:8000"
+    networks:
+      - task-network
+
+networks:
+  task-network:
+    driver: bridge
