@@ -3,7 +3,7 @@ import RootLayout from '../pages/RootLayout';
 import Login from '../pages/Login';
 import Profile from '../pages/Profile';
 import NotFound from '../pages/NotFound';
-import Tasks from '../pages/tasks/Tasks';
+import TasksList from '../pages/tasks/TaskList';
 
 const isAuthenticated = () => {
     return true;
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Tasks />,
+                element: <TasksList />,
             },
             {
                 path: 'profile',

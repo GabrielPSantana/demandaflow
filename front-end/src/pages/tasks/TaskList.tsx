@@ -5,25 +5,23 @@ import { useEffect, useMemo } from 'react';
 import { TasksService } from '../../shared/services/api/tasks/TasksService';
 import { useDebounce } from '../../shared/hooks';
 
-export default function Tasks() {
+export default function TasksList() {
     const [searchParams, setSearchParams] = useSearchParams();
-    const { debounce } = useDebounce()
+    const { debounce } = useDebounce();
 
     const search = useMemo(() => {
         return searchParams.get('search') || '';
     }, [searchParams]);
 
     useEffect(() => {
-        debounce(()=> {
-            TasksService.getAll()
-                .then((result) => {
-                    if(result instanceof Error){
-                        alert(result.message)
-                    }
-                    console.log(result)
-                });            
-        })
-
+        debounce(() => {
+            TasksService.getAll().then((result) => {
+                if (result instanceof Error) {
+                    alert(result.message);
+                }
+                console.log(result);
+            });
+        });
     }, [search]);
 
     return (
