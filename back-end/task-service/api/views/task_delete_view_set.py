@@ -19,31 +19,25 @@ class TaskDeleteViewSet(TaskViewSet):
         ),
     )
     
-    def destroy(self, request):
-            data_request = request.data
+    def destroy(self, request, task_id):
+        user_id='d4f7c2a8-3e5b-4f1d-9b2a-6c8f1a2e7d9b'
 
-            if not data_request.get('user_id') or not data_request.get('task_id'):
-                return Response(
-                    {"error": "Campos inválidos."},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
+        try:
+            TaskDeleteService().execute(
+                user_id=user_id,
+                task_id=task_id
+            )
+            
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
-            try:
-                TaskDeleteService().execute(
-                    user_id=data_request.get('user_id'),
-                    task_id=data_request.get('task_id')
-                )
-                
-                return Response(status=status.HTTP_204_NO_CONTENT)
+        except ValidationError as e:
+            return Response(
+                {"error": "Registro não encontrado."}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
 
-            except ValidationError as e:
-                return Response(
-                    {"error": "Registro não encontrado."}, 
-                    status=status.HTTP_404_NOT_FOUND
-                )
-
-            except Exception as e:
-                return Response(
-                    {"error": "Ocorreu um erro ao processar a requisição."},
-                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
-                )
+        except Exception as e:
+            return Response(
+                {"error": f'Ocorreu um erro ao processar a requisição. {e}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
