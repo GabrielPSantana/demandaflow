@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { TasksService, type ITaskList } from '../../shared/services/api/tasks/TasksService';
 import { useDebounce } from '../../shared/hooks';
 import {
+    IconButton,
     LinearProgress,
     Pagination,
     Paper,
@@ -16,6 +17,8 @@ import {
     TableHead,
     TableRow,
 } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Environment } from '../../shared/environment';
 
 type Priority = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
@@ -90,26 +93,34 @@ export default function TasksList() {
             <TableContainer component={Paper} variant="outlined" sx={{ m: 1, width: 'auto' }}>
                 <Table>
                     <TableHead>
-                        <TableRow >
-                            <TableCell sx={{fontWeight: 'bold'}}>Título</TableCell>
-                            <TableCell sx={{fontWeight: 'bold'}}>Prioridade</TableCell>
-                            <TableCell sx={{fontWeight: 'bold'}}>Status</TableCell>
-                            <TableCell sx={{fontWeight: 'bold'}}>Data de início</TableCell>
-                            <TableCell sx={{fontWeight: 'bold'}}>Data de término</TableCell>
-                            <TableCell sx={{fontWeight: 'bold'}}>Tempo gasto</TableCell>
+                        <TableRow>
+                            <TableCell sx={{ fontWeight: 'bold' }}>Ações</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold' }}>Título</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold' }}>Prioridade</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold' }}>Status</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold' }}>Data de início</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold' }}>Data de término</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold' }}>Tempo gasto</TableCell>
                         </TableRow>
                     </TableHead>
 
                     <TableBody>
                         {rowsTasks.map((row) => (
-                            <TableRow key={row.task_id} sx={{ margin: 50 }}>
+                            <TableRow hover key={row.task_id} sx={{ cursor: 'pointer' }}>
+                                <TableCell>
+                                    <IconButton size='small'>
+                                        <EditIcon />
+                                    </IconButton>
+                                    <IconButton size='small'>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </TableCell>
                                 <TableCell>{row.title}</TableCell>
 
                                 <TableCell
                                     sx={{
                                         color: priorityColorMap[row.priority as Priority],
                                         fontWeight: 'bold',
-                                        borderRadius: 4,
                                         textAlign: 'center',
                                     }}
                                 >
