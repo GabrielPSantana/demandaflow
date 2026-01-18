@@ -102,6 +102,7 @@ export default function TasksList() {
                     onSearchTextChange={(text) =>
                         setSearchParams({ page: '1', search: text }, { replace: true })
                     }
+                    onClickNewButton={() => navigate('/tasks/detail/new')}
                 />
             }
         >
