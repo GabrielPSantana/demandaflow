@@ -1,4 +1,4 @@
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ListToolbar } from '../../shared/components/ListToolbar/ListToolbar';
 import { BasePageLayout } from '../../shared/layouts';
 import { useEffect, useMemo, useState } from 'react';
@@ -25,6 +25,7 @@ type Priority = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
 type Status = 'PENDING' | 'IN_PROGRESS' | 'COMPLETED';
 
 export default function TasksList() {
+    const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const { debounce } = useDebounce();
 
@@ -76,6 +77,20 @@ export default function TasksList() {
         });
     }, [search, page]);
 
+    const handleDelete = (id: string) => {
+        if (confirm('Realmente deseja apagar?')) {
+            TasksService.removeById(id).then((result) => {
+                if (result instanceof Error) {
+                    alert(result.message);
+                } else {
+                    setRowTaks((oldRows) => {
+                        return [...oldRows.filter((oldRows) => oldRows.task_id !== id)];
+                    });
+                }
+            });
+        }
+    };
+
     return (
         <BasePageLayout
             title="Atividades"
@@ -106,13 +121,15 @@ export default function TasksList() {
 
                     <TableBody>
                         {rowsTasks.map((row) => (
-                            <TableRow hover key={row.task_id} sx={{ cursor: 'pointer' }}>
+                            <TableRow hover key={row.task_id}>
                                 <TableCell>
-                                    <IconButton size='small'>
-                                        <EditIcon />
+                                    <IconButton size="small">
+                                        <EditIcon
+                                            onClick={() => navigate(`/tasks/detail/${row.task_id}`)}
+                                        />
                                     </IconButton>
-                                    <IconButton size='small'>
-                                        <DeleteIcon />
+                                    <IconButton size="small">
+                                        <DeleteIcon onClick={() => handleDelete(row.task_id)} />
                                     </IconButton>
                                 </TableCell>
                                 <TableCell>{row.title}</TableCell>
