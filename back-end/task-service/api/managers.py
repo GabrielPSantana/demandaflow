@@ -1,6 +1,9 @@
 from django.db import models
 
 class TaskQuerySet(models.QuerySet):
+    def published(self):
+        return self.filter(published=True)
+
     def by_team(self, team_id):
         return self.filter(team_id=team_id, published=True)
 
