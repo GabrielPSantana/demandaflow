@@ -5,6 +5,7 @@ from ..services import TaskListService
 from .task_view_set import TaskViewSet
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from django.core.exceptions import ValidationError
 
 class TaskListViewSet(TaskViewSet):
     @swagger_auto_schema(
@@ -45,8 +46,14 @@ class TaskListViewSet(TaskViewSet):
                 status=status.HTTP_200_OK
             )
 
+        except ValidationError as e:
+            return Response(
+                {"error": "Registro não encontrado."}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
         except Exception as e:
             return Response(
-                {"error": "Ocorreu um erro ao processar a requisição."},
+                {"error": f'Ocorreu um erro ao processar a requisição. {e}'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
