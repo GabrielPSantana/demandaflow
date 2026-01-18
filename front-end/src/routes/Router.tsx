@@ -4,6 +4,7 @@ import Login from '../pages/Login';
 import Profile from '../pages/Profile';
 import NotFound from '../pages/NotFound';
 import TasksList from '../pages/tasks/TaskList';
+import { TaskDatail } from '../pages';
 
 const isAuthenticated = () => {
     return true;
@@ -21,6 +22,14 @@ const router = createBrowserRouter([
             {
                 index: true,
                 element: <TasksList />,
+            },
+            {
+                path: '/tasks',
+                element: <TasksList />,
+            },
+            {
+                path: '/tasks/detail/:task_id',
+                element: <TaskDatail />,
             },
             {
                 path: 'profile',
