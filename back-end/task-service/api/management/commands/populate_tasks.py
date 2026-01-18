@@ -14,6 +14,19 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         priorities = [choice[0] for choice in Task.Priority.choices]
         statuses = [choice[0] for choice in Task.Status.choices]
+        
+        titles = [
+            "Reunião de planejamento",
+            "Desenvolver endpoint de API",
+            "Testar formulário de login",
+            "Atualizar documentação do projeto",
+            "Revisar código do pull request",
+            "Implementar autenticação JWT",
+            "Corrigir bug no frontend",
+            "Criar relatório semanal",
+            "Configurar ambiente de testes",
+            "Deploy da versão de produção"
+        ]
 
         tasks_to_create = []
 
@@ -27,7 +40,7 @@ class Command(BaseCommand):
             end_dt = start_dt + duration
 
             task = Task(
-                title=' '.join(lorem_ipsum.words(3)),
+                title=random.choice(titles), 
                 description=lorem_ipsum.paragraph(),
                 priority=random.choice(priorities),
                 status=random.choice(statuses),
@@ -35,8 +48,8 @@ class Command(BaseCommand):
                 start_datetime=start_dt,
                 end_datetime=end_dt,
                 time_spent=duration,
-                user_id=uuid.uuid4(),              # 🔴 OBRIGATÓRIO
-                team_id=random.choice([uuid.uuid4(), None])  # opcional
+                user_id = "d4f7c2a8-3e5b-4f1d-9b2a-6c8f1a2e7d9b",
+                team_id=random.choice([uuid.uuid4(), None])
             )
 
             tasks_to_create.append(task)
