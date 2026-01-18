@@ -3,3 +3,4 @@ from .task_view_set import TaskViewSet
 from .task_create_view_set import TaskCreateViewSet
 from .task_update_view_set import TaskUpdateViewSet
 from .task_delete_view_set import TaskDeleteViewSet
+from .task_read_view_set import TaskReadViewSet
