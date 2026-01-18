@@ -25,9 +25,9 @@ type ITasksWithTotalCount = {
     totalCount: number;
 };
 
-const getAll = async (search: string, page:number): Promise<ITasksWithTotalCount | Error> => {
+const getAll = async (search: string, page: number): Promise<ITasksWithTotalCount | Error> => {
     try {
-        const relativeUrl = `${Environment.BASE_URL}/${Environment.API_V1_TASK}?page=${page}&search=${search}`;
+        const relativeUrl = `${Environment.BASE_URL}${Environment.API_V1_TASK}?page=${page}&search=${search}`;
 
         const { data } = await Api.get<IResponseList>(relativeUrl);
 
@@ -96,8 +96,8 @@ const updateById = async (
 
 const removeById = async (task_id: string | number): Promise<boolean | Error> => {
     try {
-        const user_id = 'd4f7c2a8-3e5b-4f1d-9b2a-6c8f1a2e7d9b';
-        const relativeUrl = `${Environment.BASE_URL}${Environment.API_V1_TASK}/${task_id}/${user_id}/delete`;
+        const relativeUrl = `${Environment.BASE_URL}${Environment.API_V1_TASK}delete/${task_id}/`;
+
         await Api.delete(relativeUrl);
         return true;
     } catch (error) {
@@ -109,6 +109,6 @@ export const TasksService = {
     getAll,
     getById,
     create,
-    update: updateById,
-    remove: removeById,
+    updateById,
+    removeById,
 };
