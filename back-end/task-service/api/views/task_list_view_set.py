@@ -21,7 +21,7 @@ class TaskListViewSet(TaskViewSet):
         ]
     )
 
-    def get_tasks_queryset(self):
+    def get_queryset(self):
         search = self.request.query_params.get("search")
 
         user_id = "d4f7c2a8-3e5b-4f1d-9b2a-6c8f1a2e7d9b"
@@ -33,15 +33,15 @@ class TaskListViewSet(TaskViewSet):
 
     def list(self, request):
         try:
-            tasks_queryset = self.filter_queryset(self.get_tasks_queryset())
+            queryset = self.filter_queryset(self.get_queryset())
 
-            tasks_page = self.paginate_queryset(tasks_queryset)
+            tasks_paginated = self.paginate_queryset(queryset)
 
-            if tasks_page is not None:
-                return self.get_paginated_response(TaskSerializer(tasks_page, many=True).data)
+            if tasks_paginated is not None:
+                return self.get_paginated_response(TaskSerializer(tasks_paginated, many=True).data)
 
             return Response(
-                TaskSerializer(tasks_queryset, many=True).data,
+                TaskSerializer(queryset, many=True).data,
                 status=status.HTTP_200_OK
             )
 
