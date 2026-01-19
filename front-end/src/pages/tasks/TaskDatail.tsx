@@ -76,9 +76,16 @@ export const TaskDatail = () => {
                     TasksService.create(dadosValidados).then((result) => {
                         setIsLoading(false);
                         if (result instanceof Error) {
-                            alert(result.message);
+                            Swal.fire({
+                                title: 'Ocorreu um erro ao salvar sua atividade, tente mais tarde!',
+                                icon: 'warning',
+                                draggable: true,
+                            });
                         } else {
-                            alert('Registro salvo com sucesso');
+                            Swal.fire({
+                                title: 'Atividade salva com sucesso!',
+                                icon: 'success',
+                            });
                             navigate(`/tasks/detail/${result.task_id}`);
                         }
                     });
