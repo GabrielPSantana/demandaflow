@@ -7,6 +7,7 @@ import { Box, LinearProgress, Grid, Paper, Typography } from '@mui/material';
 import { VForm, VSelectField, VTextField } from '../../shared/forms';
 import type { FormHandles } from '@unform/core';
 import * as yup from 'yup';
+import Swal from 'sweetalert2';
 
 export const formValidationSchema = yup.object({
     title: yup
@@ -34,6 +35,14 @@ export const TaskDatail = () => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [taskName, setTaskName] = useState('');
+
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger',
+        },
+        buttonsStyling: true,
+    });
 
     useEffect(() => {
         if (task_id != 'new') {
@@ -98,16 +107,36 @@ export const TaskDatail = () => {
     };
 
     const handleDelete = (task_id: string) => {
-        if (confirm('Realmente deseja apagar?')) {
-            TasksService.removeById(task_id).then((result) => {
-                if (result instanceof Error) {
-                    alert(result.message);
-                } else {
-                    alert('Registro apagado com sucesso');
-                    navigate('/tasks');
+        swalWithBootstrapButtons
+            .fire({
+                title: 'Você tem certeza?',
+                text: 'Você não poderá reverter isso!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sim, excluir!',
+                cancelButtonText: 'Não, cancelar!',
+                reverseButtons: true,
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    TasksService.removeById(task_id).then((result) => {
+                        if (result instanceof Error) {
+                            swalWithBootstrapButtons.fire({
+                                title: 'Erro ao exluir atividade',
+                                text: 'Contate o admnistrador do sistema',
+                                icon: 'warning',
+                            });
+                        } else {
+                            swalWithBootstrapButtons.fire({
+                                title: 'Excluída!',
+                                text: 'Sua atividade foi excluída.',
+                                icon: 'success',
+                            });
+                            navigate('/tasks');
+                        }
+                    });
                 }
             });
-        }
     };
 
     return (
