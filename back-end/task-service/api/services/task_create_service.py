@@ -10,13 +10,10 @@ class TaskCreateService(TaskService):
         user_id,
         title,
         description,
-        team_id,
         priority,
         status,
         start_datetime,
         end_datetime,
-        time_spent,
-        published=True
     ):
         try:
             if start_datetime and end_datetime:
@@ -26,13 +23,12 @@ class TaskCreateService(TaskService):
                 user_id=user_id,
                 title=title,
                 description=description,
-                team_id=team_id,
                 priority=priority,
                 status=status,
                 start_datetime=start_datetime,
                 end_datetime=end_datetime,
                 time_spent=time_spent,
-                published=published
+                published=True
             )
 
             task.full_clean()
@@ -45,4 +41,4 @@ class TaskCreateService(TaskService):
 
         except Exception as e:
 
-            raise Exception("Ocorreu um erro interno ao processar a criação da task.")
+            raise Exception(f'Ocorreu um erro interno ao processar a criação da task.{e}')
