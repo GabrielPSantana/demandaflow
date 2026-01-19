@@ -25,7 +25,7 @@ export const formValidationSchema = yup.object({
     priority: yup.string().required('Prioridade é obrigatória'),
     status: yup.string().required('Status é obrigatório'),
     start_datetime: yup.string().required('Data inicial é obrigatória'),
-    end_datetime: yup.string().nullable(),
+    end_datetime: yup.string().required('Data final é obrigatória'),
 }) as yup.ObjectSchema<ITaskList>;
 
 export const TaskDatail = () => {
