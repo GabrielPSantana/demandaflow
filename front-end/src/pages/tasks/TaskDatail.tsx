@@ -50,7 +50,11 @@ export const TaskDatail = () => {
             TasksService.getById(task_id).then((result) => {
                 setIsLoading(false);
                 if (result instanceof Error) {
-                    alert(result.message);
+                    Swal.fire({
+                        title: 'Ocorreu um erro ao carregar sua atividade, tente mais tarde!',
+                        icon: 'warning',
+                        draggable: true,
+                    });
                 } else {
                     setTaskName(result.title);
                     formRef.current?.setData(result);
@@ -79,13 +83,13 @@ export const TaskDatail = () => {
                             Swal.fire({
                                 title: 'Ocorreu um erro ao salvar sua atividade, tente mais tarde!',
                                 icon: 'warning',
-                                showConfirmButton: false
+                                showConfirmButton: false,
                             });
                         } else {
                             Swal.fire({
                                 title: 'Atividade salva com sucesso!',
                                 icon: 'success',
-                                showConfirmButton: false
+                                showConfirmButton: false,
                             });
                             navigate(`/tasks/detail/${result.task_id}`);
                         }
@@ -97,13 +101,13 @@ export const TaskDatail = () => {
                             Swal.fire({
                                 title: 'Ocorreu um erro ao salvar sua atividade, tente mais tarde!',
                                 icon: 'warning',
-                                showConfirmButton: false
+                                showConfirmButton: false,
                             });
                         } else {
                             Swal.fire({
                                 title: 'Atividade salva com sucesso!',
                                 icon: 'success',
-                                showConfirmButton: false
+                                showConfirmButton: false,
                             });
                             navigate(`/tasks/detail/${result.task_id}`);
                         }
