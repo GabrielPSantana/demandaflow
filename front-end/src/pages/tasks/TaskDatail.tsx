@@ -3,24 +3,44 @@ import { BasePageLayout } from '../../shared/layouts';
 import { DetailToolbar } from '../../shared/components/DetailToolbar/DetailToolbar';
 import { useEffect, useRef, useState } from 'react';
 import { TasksService, type ITaskList } from '../../shared/services/api/tasks/TasksService';
-import { Box, LinearProgress, Paper, Typography } from '@mui/material';
-import Grid from '@mui/material/Grid';
-import { Form } from '@unform/web';
-import { VSelectField, VTextField } from '../../shared/forms';
+import { Box, LinearProgress, Grid, Paper, Typography } from '@mui/material';
+import { VForm, VSelectField, VTextField } from '../../shared/forms';
 import type { FormHandles } from '@unform/core';
 
 export const TaskDatail = () => {
     const { task_id = 'new' } = useParams<'task_id'>();
     const navigate = useNavigate();
-
     const formRef = useRef<FormHandles>(null);
 
     const [isLoading, setIsLoading] = useState(false);
     const [taskName, setTaskName] = useState('');
 
+        useEffect(() => {
+        if (task_id != 'new') {
+            setIsLoading(true);
+            TasksService.getById(task_id).then((result) => {
+                setIsLoading(false);
+                if (result instanceof Error) {
+                    alert(result.message);
+                } else {
+                    setTaskName(result.title);
+                    formRef.current?.setData(result);
+                }
+            });
+        } else {
+            formRef.current?.setData({
+                title: '',
+                priority: '',
+                description: '',
+                start_datetime: '',
+                end_datetime: '',
+            });
+        }
+    }, [task_id]);
+
     const handleSave = (dados: ITaskList) => {
-        console.log(dados);
         setIsLoading(true);
+
         if (task_id == 'new') {
             TasksService.create(dados).then((result) => {
                 setIsLoading(false);
@@ -57,21 +77,6 @@ export const TaskDatail = () => {
         }
     };
 
-    useEffect(() => {
-        if (task_id != 'new') {
-            setIsLoading(true);
-            TasksService.getById(task_id).then((result) => {
-                setIsLoading(false);
-                if (result instanceof Error) {
-                    alert(result.message);
-                } else {
-                    setTaskName(result.title);
-                    formRef.current?.setData(result);
-                }
-            });
-        }
-    }, [task_id]);
-
     return (
         <BasePageLayout
             title={task_id === 'new' ? 'Nova Atividade' : taskName}
@@ -89,7 +94,7 @@ export const TaskDatail = () => {
                 />
             }
         >
-            <Form ref={formRef} onSubmit={handleSave}>
+            <VForm ref={formRef} onSubmit={handleSave} {...({} as any)}>
                 <Box
                     margin={1}
                     display="flex"
@@ -195,7 +200,7 @@ export const TaskDatail = () => {
                         </Grid>
                     </Grid>
                 </Box>
-            </Form>
+            </VForm>
         </BasePageLayout>
     );
 };
