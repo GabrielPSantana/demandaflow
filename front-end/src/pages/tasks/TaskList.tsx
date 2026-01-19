@@ -77,14 +77,14 @@ export default function TasksList() {
         });
     }, [search, page]);
 
-    const handleDelete = (id: string) => {
+    const handleDelete = (task_id: string) => {
         if (confirm('Realmente deseja apagar?')) {
-            TasksService.removeById(id).then((result) => {
+            TasksService.removeById(task_id).then((result) => {
                 if (result instanceof Error) {
                     alert(result.message);
                 } else {
                     setRowTaks((oldRows) => {
-                        return [...oldRows.filter((oldRows) => oldRows.task_id !== id)];
+                        return [...oldRows.filter((oldRows) => oldRows.task_id !== task_id)];
                     });
                 }
             });
@@ -173,7 +173,7 @@ export default function TasksList() {
 
                         {totalCountTasks > 0 && totalCountTasks > Environment.LINE_LIMIT && (
                             <TableRow>
-                                <TableCell colSpan={6}>
+                                <TableCell colSpan={totalCountTasks / Environment.LINE_LIMIT }>
                                     <Pagination
                                         page={page}
                                         count={totalCountTasks}
