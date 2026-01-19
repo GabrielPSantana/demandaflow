@@ -8,20 +8,6 @@ from drf_yasg import openapi
 from django.core.exceptions import ValidationError
 
 class TaskListViewSet(TaskViewSet):
-    @swagger_auto_schema(
-        manual_parameters=[
-            openapi.Parameter(
-                'user_id', openapi.IN_QUERY, description="UUID do usuário", type=openapi.TYPE_STRING, required=True
-            ),
-            openapi.Parameter(
-                'team_id', openapi.IN_QUERY, description="UUID do time", type=openapi.TYPE_STRING, required=False
-            ),
-            openapi.Parameter(
-                'is_manager', openapi.IN_QUERY, description="Se é manager", type=openapi.TYPE_BOOLEAN, required=False
-            ),
-        ]
-    )
-
     def get_queryset(self):
         search = self.request.query_params.get("search")
 

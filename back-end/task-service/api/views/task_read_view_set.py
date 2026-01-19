@@ -8,20 +8,7 @@ from drf_yasg import openapi
 from django.core.exceptions import ValidationError
 
 class TaskReadViewSet(TaskViewSet):
-    @swagger_auto_schema(
-        manual_parameters=[
-            openapi.Parameter(
-                'user_id', openapi.IN_QUERY, description="UUID do usuário", type=openapi.TYPE_STRING, required=True
-            ),
-            openapi.Parameter(
-                'team_id', openapi.IN_QUERY, description="UUID do time", type=openapi.TYPE_STRING, required=False
-            ),
-            openapi.Parameter(
-                'is_manager', openapi.IN_QUERY, description="Se é manager", type=openapi.TYPE_BOOLEAN, required=False
-            ),
-        ]
-    )
-    
+
     def retrieve(self, request, task_id):
         try:
             user_id='d4f7c2a8-3e5b-4f1d-9b2a-6c8f1a2e7d9b'

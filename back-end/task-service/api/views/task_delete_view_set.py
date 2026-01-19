@@ -8,17 +8,6 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
 class TaskDeleteViewSet(TaskViewSet):
-    @swagger_auto_schema(
-        request_body=openapi.Schema(
-            type=openapi.TYPE_OBJECT,
-            required=['user_id', 'task_id'],
-            properties={
-                'user_id': openapi.Schema(type=openapi.TYPE_STRING, description='UUID do usuário'),
-                'task_id': openapi.Schema(type=openapi.TYPE_STRING, description='UUID da task'),
-            },
-        ),
-    )
-    
     def destroy(self, request, task_id):
         user_id='d4f7c2a8-3e5b-4f1d-9b2a-6c8f1a2e7d9b'
 
