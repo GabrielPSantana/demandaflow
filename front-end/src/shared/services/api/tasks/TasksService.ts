@@ -2,7 +2,7 @@ import { Environment } from '../../../environment';
 import { Api } from '../axios-config';
 
 export interface ITaskList {
-    task_id?: string;
+    task_id: string;
     title: string;
     description: string;
     priority: string;
@@ -10,6 +10,7 @@ export interface ITaskList {
     start_datetime: Date | string;
     end_datetime: Date | string;
     team_id: string;
+    time_spent: string;
 }
 
 export interface IResponseList {
