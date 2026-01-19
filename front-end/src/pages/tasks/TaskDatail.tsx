@@ -6,6 +6,26 @@ import { TasksService, type ITaskList } from '../../shared/services/api/tasks/Ta
 import { Box, LinearProgress, Grid, Paper, Typography } from '@mui/material';
 import { VForm, VSelectField, VTextField } from '../../shared/forms';
 import type { FormHandles } from '@unform/core';
+import * as yup from 'yup';
+
+export const formValidationSchema = yup.object({
+    title: yup
+        .string()
+        .required('Título é obrigatório')
+        .min(5, 'Título deve ter no mínimo 5 caracteres')
+        .max(30, 'Título deve ter no máximo 30 caracteres'),
+
+    description: yup
+        .string()
+        .required('Descrição é obrigatória')
+        .min(3, 'Descrição deve ter no mínimo 3 caracteres')
+        .max(250, 'Descrição deve ter no máximo 250 caracteres'),
+
+    priority: yup.string().required('Prioridade é obrigatória'),
+    status: yup.string().required('Status é obrigatório'),
+    start_datetime: yup.string().required('Data inicial é obrigatória'),
+    end_datetime: yup.string().nullable(),
+}) as yup.ObjectSchema<ITaskList>;
 
 export const TaskDatail = () => {
     const { task_id = 'new' } = useParams<'task_id'>();
@@ -15,7 +35,7 @@ export const TaskDatail = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [taskName, setTaskName] = useState('');
 
-        useEffect(() => {
+    useEffect(() => {
         if (task_id != 'new') {
             setIsLoading(true);
             TasksService.getById(task_id).then((result) => {
@@ -39,29 +59,42 @@ export const TaskDatail = () => {
     }, [task_id]);
 
     const handleSave = (dados: ITaskList) => {
-        setIsLoading(true);
+        formValidationSchema
+            .validate(dados, { abortEarly: false })
+            .then((dadosValidados) => {
+                setIsLoading(true);
+                if (task_id == 'new') {
+                    TasksService.create(dadosValidados).then((result) => {
+                        setIsLoading(false);
+                        if (result instanceof Error) {
+                            alert(result.message);
+                        } else {
+                            alert('Registro salvo com sucesso');
+                            navigate(`/tasks/detail/${result.task_id}`);
+                        }
+                    });
+                } else {
+                    TasksService.updateById(task_id, dadosValidados).then((result) => {
+                        setIsLoading(false);
+                        if (result instanceof Error) {
+                            alert(result.message);
+                        } else {
+                            alert('Registro salvo com sucesso');
+                            navigate(`/tasks/detail/${result.task_id}`);
+                        }
+                    });
+                }
+            })
+            .catch((error: yup.ValidationError) => {
+                const validationErrors: { [key: string]: string } = {};
 
-        if (task_id == 'new') {
-            TasksService.create(dados).then((result) => {
-                setIsLoading(false);
-                if (result instanceof Error) {
-                    alert(result.message);
-                } else {
-                    alert('Registro salvo com sucesso');
-                    navigate(`/tasks/detail/${result.task_id}`);
-                }
+                error.inner.forEach((error) => {
+                    if (!error.path) return;
+                    validationErrors[error.path] = error.message;
+                });
+
+                formRef.current?.setErrors(validationErrors);
             });
-        } else {
-            TasksService.updateById(task_id, dados).then((result) => {
-                setIsLoading(false);
-                if (result instanceof Error) {
-                    alert(result.message);
-                } else {
-                    alert('Registro salvo com sucesso');
-                    navigate(`/tasks/detail/${result.task_id}`);
-                }
-            });
-        }
     };
 
     const handleDelete = (task_id: string) => {
@@ -83,11 +116,9 @@ export const TaskDatail = () => {
             toolbar={
                 <DetailToolbar
                     newButtonText="Nova"
-                    showSaveAndCloseButton
                     showNewButton={task_id != 'new'}
                     showDeleteButton={task_id != 'new'}
                     onClickSaveButton={() => formRef.current?.submitForm()}
-                    onClickSaveAndCloseButton={() => formRef.current?.submitForm()}
                     onClickDeleteButton={() => handleDelete(task_id)}
                     onClickPreviousButton={() => navigate('/tasks')}
                     onClickNewButton={() => navigate('/tasks/detail/new')}
