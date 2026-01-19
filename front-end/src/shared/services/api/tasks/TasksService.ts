@@ -7,8 +7,8 @@ export interface ITaskList {
     description: string;
     priority: string;
     status: string;
-    start_datetime: Date;
-    end_datetime: Date;
+    start_datetime: Date | string;
+    end_datetime: Date | string;
     team_id: string;
 }
 
