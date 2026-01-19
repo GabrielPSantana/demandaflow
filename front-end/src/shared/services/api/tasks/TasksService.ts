@@ -2,14 +2,13 @@ import { Environment } from '../../../environment';
 import { Api } from '../axios-config';
 
 export interface ITaskList {
-    task_id: string;
+    task_id?: string;
     title: string;
     description: string;
     priority: string;
     status: string;
     start_datetime: Date;
     end_datetime: Date;
-    time_spent: string;
     team_id: string;
 }
 
@@ -20,10 +19,17 @@ export interface IResponseList {
     results: ITaskList[];
 }
 
+export type Priority = 'LOW' | 'MEDIUM' | 'CRITICAL' | 'HIGH';
+
+export type Status = 'PENDING' | 'IN_PROGRESS' | 'COMPLETED';
+
+
 type ITasksWithTotalCount = {
     data: ITaskList[];
     totalCount: number;
 };
+
+
 
 const getAll = async (search: string, page: number): Promise<ITasksWithTotalCount | Error> => {
     try {
@@ -44,9 +50,9 @@ const getAll = async (search: string, page: number): Promise<ITasksWithTotalCoun
     }
 };
 
-const getById = async (task_id: string | number): Promise<ITaskList | Error> => {
+const getById = async (task_id: string): Promise<ITaskList | Error> => {
     try {
-        const relativeUrl = `${Environment.BASE_URL}${Environment.API_V1_TASK}/${task_id}/`;
+        const relativeUrl = `${Environment.BASE_URL}${Environment.API_V1_TASK}${task_id}/`;
 
         const { data } = await Api.get(relativeUrl);
 
@@ -60,9 +66,9 @@ const getById = async (task_id: string | number): Promise<ITaskList | Error> => 
     }
 };
 
-const create = async (taskData: Partial<ITaskList>): Promise<number | Error> => {
+const create = async (taskData: Partial<ITaskList>): Promise<ITaskList | Error> => {
     try {
-        const relativeUrl = `${Environment.BASE_URL}${Environment.API_V1_TASK}/create/`;
+        const relativeUrl = `${Environment.BASE_URL}${Environment.API_V1_TASK}create/`;
 
         const { data } = await Api.post(relativeUrl, taskData);
 
@@ -79,9 +85,9 @@ const create = async (taskData: Partial<ITaskList>): Promise<number | Error> => 
 const updateById = async (
     task_id: string | number,
     taskData: Partial<ITaskList>,
-): Promise<void | Error> => {
+): Promise<ITaskList | Error> => {
     try {
-        const relativeUrl = `${Environment.BASE_URL}${Environment.API_V1_TASK}/update/${task_id}/`;
+        const relativeUrl = `${Environment.BASE_URL}${Environment.API_V1_TASK}update/${task_id}/`;
         const { data } = await Api.put(relativeUrl, taskData);
 
         if (data) {
