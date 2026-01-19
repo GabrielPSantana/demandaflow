@@ -20,6 +20,7 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Environment } from '../../shared/environment';
+import Swal from 'sweetalert2';
 
 type Priority = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
 type Status = 'PENDING' | 'IN_PROGRESS' | 'COMPLETED';
@@ -53,6 +54,17 @@ export default function TasksList() {
         LOW: 'Baixo',
     };
 
+    console.log(totalCountTasks);
+    console.log(Environment.LINE_LIMIT);
+
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger',
+        },
+        buttonsStyling: true,
+    });
+
     const page = useMemo(() => {
         return Number(searchParams.get('page') || '1');
     }, [searchParams]);
@@ -78,17 +90,42 @@ export default function TasksList() {
     }, [search, page]);
 
     const handleDelete = (task_id: string) => {
-        if (confirm('Realmente deseja apagar?')) {
-            TasksService.removeById(task_id).then((result) => {
-                if (result instanceof Error) {
-                    alert(result.message);
-                } else {
-                    setRowTaks((oldRows) => {
-                        return [...oldRows.filter((oldRows) => oldRows.task_id !== task_id)];
+        swalWithBootstrapButtons
+            .fire({
+                title: 'Você tem certeza?',
+                text: 'Você não poderá reverter isso!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sim, excluir!',
+                cancelButtonText: 'Não, cancelar!',
+                reverseButtons: true,
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    TasksService.removeById(task_id).then((result) => {
+                        if (result instanceof Error) {
+                            swalWithBootstrapButtons.fire({
+                                title: 'Erro ao exluir atividade',
+                                text: 'Contate o admnistrador do sistema',
+                                icon: 'warning',
+                            });
+                            alert(result.message);
+                        } else {
+                            setRowTaks((oldRows) => {
+                                return [
+                                    ...oldRows.filter((oldRows) => oldRows.task_id !== task_id),
+                                ];
+                            });
+
+                            swalWithBootstrapButtons.fire({
+                                title: 'Excluída!',
+                                text: 'Sua atividade foi excluída.',
+                                icon: 'success',
+                            });
+                        }
                     });
                 }
             });
-        }
     };
 
     return (
@@ -173,10 +210,10 @@ export default function TasksList() {
 
                         {totalCountTasks > 0 && totalCountTasks > Environment.LINE_LIMIT && (
                             <TableRow>
-                                <TableCell colSpan={totalCountTasks / Environment.LINE_LIMIT }>
+                                <TableCell colSpan={6}>
                                     <Pagination
                                         page={page}
-                                        count={totalCountTasks}
+                                        count={Math.floor(totalCountTasks / Environment.LINE_LIMIT)}
                                         shape="rounded"
                                         onChange={(_, newPage) =>
                                             setSearchParams(
