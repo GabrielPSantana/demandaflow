@@ -54,9 +54,6 @@ export default function TasksList() {
         LOW: 'Baixo',
     };
 
-    console.log(totalCountTasks);
-    console.log(Environment.LINE_LIMIT);
-
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
             confirmButton: 'btn btn-success',
