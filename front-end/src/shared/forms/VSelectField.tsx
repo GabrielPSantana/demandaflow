@@ -23,16 +23,18 @@ type VSelectFieldProps = SelectProps & {
 export const VSelectField = ({ name, label, options, ...rest }: VSelectFieldProps) => {
     const { fieldName, registerField, defaultValue, error, clearError } = useField(name);
 
-    const [value, setValue] = useState(defaultValue ?? '');
+    const [value, setValue] = useState(defaultValue || '');
 
     useEffect(() => {
         registerField({
             name: fieldName,
             getValue: () => value,
-            setValue: (_, newValue) => setValue(newValue),
+            setValue: (_, newValue) => setValue(newValue ?? ''),
             clearValue: () => setValue(''),
         });
     }, [fieldName, registerField, value]);
+
+
 
     return (
         <FormControl fullWidth error={!!error}>
