@@ -1,11 +1,9 @@
+from django.core.exceptions import ValidationError
 from rest_framework import status
 from rest_framework.response import Response
+
 from ..services import TaskDeleteService
 from .task_view_set import TaskViewSet
-from django.core.exceptions import ValidationError
-
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
 
 class TaskDeleteViewSet(TaskViewSet):
     def destroy(self, request, task_id):
@@ -27,6 +25,6 @@ class TaskDeleteViewSet(TaskViewSet):
 
         except Exception as e:
             return Response(
-                {"error": f'Ocorreu um erro ao processar a requisição. {e}'},
+                {"error": f'Ocorreu um erro ao processar a requisição.'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )

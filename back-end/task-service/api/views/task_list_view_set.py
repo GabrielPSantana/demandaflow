@@ -1,11 +1,10 @@
+from django.core.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework import status
+
 from ..serializers import TaskSerializer
 from ..services import TaskListService
 from .task_view_set import TaskViewSet
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
-from django.core.exceptions import ValidationError
 
 class TaskListViewSet(TaskViewSet):
     def get_queryset(self):

@@ -1,12 +1,10 @@
+from django.core.exceptions import ValidationError
 from rest_framework import status
 from rest_framework.response import Response
-from django.core.exceptions import ValidationError
+
 from ..serializers import TaskSerializer
 from ..services import TaskCreateService
 from .task_view_set import TaskViewSet
-
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
 
 class TaskCreateViewSet(TaskViewSet):
     def create(self, request):
@@ -30,13 +28,12 @@ class TaskCreateViewSet(TaskViewSet):
 
         except ValidationError as error:
             return Response(
-                {"error": f'Dados inválidos para a criação da task. {error}'}, 
+                {"error": f'Dados inválidos para a criação da task.'}, 
                 status=status.HTTP_400_BAD_REQUEST
             )
 
         except Exception as error:
-
             return Response(
-                {"error": f"Ocorreu um erro interno ao processar a requisição.{error}"},
+                {"error": f"Ocorreu um erro interno ao processar a requisição."},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
