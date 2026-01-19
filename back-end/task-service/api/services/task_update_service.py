@@ -15,7 +15,6 @@ class TaskUpdateService(TaskService):
         status,
         start_datetime,
         end_datetime,
-        time_spent,
     ):
         try:
             task = Task.objects.by_task_id_and_user_id(task_id, user_id)
@@ -23,8 +22,7 @@ class TaskUpdateService(TaskService):
             if not task:
                 raise ValidationError("O recurso solicitado não foi encontrado.")
 
-
-            if (start_datetime and end_datetime) and not time_spent:
+            if (start_datetime and end_datetime):
                 time_spent = time_spent_util(start_datetime, end_datetime)
 
             task.title = title
@@ -44,4 +42,4 @@ class TaskUpdateService(TaskService):
             raise error
 
         except Exception as e:
-            raise ValidationError("Ocorreu um erro ao atualizar a task")
+            raise ValidationError(f"Ocorreu um erro ao atualizar a task {e}")

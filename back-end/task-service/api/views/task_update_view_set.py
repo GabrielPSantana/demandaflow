@@ -16,28 +16,33 @@ class TaskUpdateViewSet(TaskViewSet):
         try:
             user_id='d4f7c2a8-3e5b-4f1d-9b2a-6c8f1a2e7d9b'
 
+
+            serializer = TaskSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+
             task = TaskUpdateService().execute(
                 user_id=user_id,
                 task_id=task_id,
-                title=data_request.get('title'),
-                description=data_request.get('description'),
-                priority=data_request.get('priority'),
-                status=data_request.get('status'),
-                start_datetime=data_request.get('start_datetime'),
-                end_datetime=data_request.get('end_datetime'),
-                time_spent=data_request.get('time_spent'),
+                title=serializer.data['title'],
+                description=serializer.data['description'],
+                priority=serializer.data['priority'],
+                status=serializer.data['status'],
+                start_datetime=serializer.data['start_datetime'],
+                end_datetime=serializer.data['end_datetime'],
             )
 
             return Response(TaskSerializer(task).data, status=status.HTTP_200_OK)
 
-        except ValidationError as e:
+
+        except ValidationError as error:
             return Response(
-                {"error": "Registro não encontrado."}, 
-                status=status.HTTP_404_NOT_FOUND
+                {"error": f'Dados inválidos para a criação da task. {error}'}, 
+                status=status.HTTP_400_BAD_REQUEST
             )
 
-        except Exception as e:
+        except Exception as error:
+
             return Response(
-                {"error": f'Ocorreu um erro ao processar a requisição.'},
+                {"error": f"Ocorreu um erro interno ao processar a requisição.{error}"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
