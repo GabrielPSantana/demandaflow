@@ -79,12 +79,13 @@ export const TaskDatail = () => {
                             Swal.fire({
                                 title: 'Ocorreu um erro ao salvar sua atividade, tente mais tarde!',
                                 icon: 'warning',
-                                draggable: true,
+                                showConfirmButton: false
                             });
                         } else {
                             Swal.fire({
                                 title: 'Atividade salva com sucesso!',
                                 icon: 'success',
+                                showConfirmButton: false
                             });
                             navigate(`/tasks/detail/${result.task_id}`);
                         }
@@ -93,9 +94,17 @@ export const TaskDatail = () => {
                     TasksService.updateById(task_id, dadosValidados).then((result) => {
                         setIsLoading(false);
                         if (result instanceof Error) {
-                            alert(result.message);
+                            Swal.fire({
+                                title: 'Ocorreu um erro ao salvar sua atividade, tente mais tarde!',
+                                icon: 'warning',
+                                showConfirmButton: false
+                            });
                         } else {
-                            alert('Registro salvo com sucesso');
+                            Swal.fire({
+                                title: 'Atividade salva com sucesso!',
+                                icon: 'success',
+                                showConfirmButton: false
+                            });
                             navigate(`/tasks/detail/${result.task_id}`);
                         }
                     });
