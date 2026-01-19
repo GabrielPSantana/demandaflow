@@ -20,19 +20,16 @@ interface IDetailToolbar {
     showPreviousButton?: boolean;
     showDeleteButton?: boolean;
     showSaveButton?: boolean;
-    showSaveAndCloseButton?: boolean;
 
     showLoadingNewButton?: boolean;
     showLoadingPreviousButton?: boolean;
     showLoadingDeleteButton?: boolean;
     showLoadingSaveButton?: boolean;
-    showLoadingSaveAndCloseButton?: boolean;
 
     onClickNewButton?: () => void;
     onClickPreviousButton?: () => void;
     onClickDeleteButton?: () => void;
     onClickSaveButton?: () => void;
-    onClickSaveAndCloseButton?: () => void;
 }
 
 export const DetailToolbar = ({
@@ -42,19 +39,16 @@ export const DetailToolbar = ({
     showPreviousButton = true,
     showDeleteButton = true,
     showSaveButton = true,
-    showSaveAndCloseButton = true,
 
     showLoadingNewButton = false,
     showLoadingPreviousButton = false,
     showLoadingDeleteButton = false,
     showLoadingSaveButton = false,
-    showLoadingSaveAndCloseButton = false,
 
     onClickNewButton,
     onClickPreviousButton,
     onClickDeleteButton,
     onClickSaveButton,
-    onClickSaveAndCloseButton,
 }: IDetailToolbar) => {
     const theme = useTheme();
 
@@ -94,28 +88,6 @@ export const DetailToolbar = ({
                 </Button>
             )}
             {showLoadingSaveButton && <Skeleton width={110} height={60} />}
-
-            {showSaveAndCloseButton && !showLoadingSaveAndCloseButton && !smDown && !mdDown && (
-                <Button
-                    variant="outlined"
-                    color="primary"
-                    disableElevation
-                    startIcon={<SaveIcon />}
-                    onClick={onClickSaveAndCloseButton}
-                >
-                    <Typography
-                        variant="button"
-                        whiteSpace="nowrap"
-                        textOverflow="ellipsis"
-                        overflow="hidden"
-                    >
-                        Salvar e fechar
-                    </Typography>
-                </Button>
-            )}
-            {showLoadingSaveAndCloseButton && !smDown && !mdDown && (
-                <Skeleton width={180} height={60} />
-            )}
 
             {showDeleteButton && !showLoadingDeleteButton && (
                 <Button
