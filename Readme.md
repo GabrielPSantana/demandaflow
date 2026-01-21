@@ -1,6 +1,6 @@
 # 🚀 DemandaFlow
 
-O **DemandaFlow** é uma solução Full Stack moderna para o gerenciamento de de demandas. O projeto utiliza uma arquitetura microserviços com um backend robusto em Django e um frontend dinâmico em React, totalmente orquestrados via Docker.
+O **DemandaFlow** é uma solução Full Stack moderna para o gerenciamento de demandas. O projeto utiliza uma arquitetura microserviços com um backend robusto em Django e um frontend dinâmico em React, totalmente orquestrados via Docker.
 
 ---
 
